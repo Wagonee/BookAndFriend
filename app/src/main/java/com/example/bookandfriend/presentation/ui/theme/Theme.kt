@@ -1,6 +1,5 @@
-package com.example.bookandfriend.ui.theme
+package com.example.bookandfriend.presentation.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

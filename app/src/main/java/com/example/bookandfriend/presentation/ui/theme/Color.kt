@@ -1,4 +1,4 @@
-package com.example.bookandfriend.ui.theme
+package com.example.bookandfriend.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
