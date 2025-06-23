@@ -4,6 +4,7 @@ import com.example.bookandfriend.data.mappers.BookMapper
 import com.example.bookandfriend.data.network.OpenLibraryApiService
 import com.example.bookandfriend.data.network.RetrofitClient
 import com.example.bookandfriend.domain.model.Book
+import com.example.bookandfriend.domain.model.BookDetails
 import com.example.bookandfriend.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -45,6 +46,16 @@ class SearchRepositoryImpl(
             Result.success(randomBook)
         } catch (e: Exception) {
             return Result.failure(e)
+        }
+    }
+
+    override suspend fun getBookDetails(workId: String): Result<BookDetails> {
+        return try {
+            val id = workId.removePrefix("/works/")
+            val detailsDto = apiService.getBookDetails(id)
+            Result.success(mapper.mapDtoToDomainDetails(detailsDto))
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }

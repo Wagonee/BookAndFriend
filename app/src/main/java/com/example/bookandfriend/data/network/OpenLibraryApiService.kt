@@ -1,6 +1,6 @@
 package com.example.bookandfriend.data.network
 
-import com.example.bookandfriend.data.network.dto.BookDto
+import com.example.bookandfriend.data.network.dto.BookDetailsDto
 import com.example.bookandfriend.data.network.dto.SearchResultDto
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,5 +13,5 @@ interface OpenLibraryApiService {
     ): SearchResultDto
 
     @GET("works/{workId}.json")
-    suspend fun getBookDetails(@Path("workId") workId: String): BookDto
+    suspend fun getBookDetails(@Path("workId") workId: String): BookDetailsDto
 }
