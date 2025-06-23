@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.androidx.room.runtime)
