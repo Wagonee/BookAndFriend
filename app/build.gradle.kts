@@ -44,11 +44,10 @@ android {
 dependencies {
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-
     implementation(libs.androidx.navigation.compose)
-
     implementation(libs.retrofit)
     implementation(libs.gson)
+    implementation(libs.logging.interceptor)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
