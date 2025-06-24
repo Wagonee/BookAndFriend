@@ -8,5 +8,6 @@ data class Book(
     val publishYear: Int?,
     val language: String?,
     val description: String? = null,
-    val genres: List<String>? = null
+    val genres: List<String>? = null,
+    val isLiked: Boolean = false
 )
