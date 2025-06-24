@@ -1,10 +1,22 @@
 package com.example.bookandfriend.domain.usecase
 
-import com.example.bookandfriend.domain.model.BookDetails
+import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.domain.repository.SearchRepository
 
 class GetBookDetailsUseCase(private val repository: SearchRepository) {
-    suspend operator fun invoke(workId: String) : Result<BookDetails> {
-        return repository.getBookDetails(workId)
+    suspend operator fun invoke(book: Book): Result<Book> {
+
+        if (book.description != null && book.genres != null) {
+            return Result.success(book)
+        }
+
+        val detailsResult = repository.getBookDetails(book.id)
+        return detailsResult.map { details ->
+            val enrichedBook = book.copy(
+                description = details.description,
+                genres = details.genres
+            )
+            enrichedBook
+        }
     }
 }

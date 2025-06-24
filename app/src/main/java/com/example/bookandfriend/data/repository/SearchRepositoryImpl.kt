@@ -35,6 +35,7 @@ class SearchRepositoryImpl(
                     val endYear = century * 100
                     "first_publish_year:[${startYear} TO ${endYear}]"
                 }
+
                 else -> return Result.failure(IllegalArgumentException("No criteria of random search were added."))
             }
             val response = apiService.searchBooks(query)
