@@ -1,6 +1,7 @@
-package com.example.bookandfriend.presentation.screens.library
+package com.example.bookandfriend.presentation.screens.global_search
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,13 +17,13 @@ import com.example.bookandfriend.presentation.navigation.BottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LibraryScreen(
-    navController: NavController
+fun MainScreen(
+    navController: NavController,
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Favourites") }
+                title = { Text("Book And Friend") }
             )
         },
         bottomBar = {

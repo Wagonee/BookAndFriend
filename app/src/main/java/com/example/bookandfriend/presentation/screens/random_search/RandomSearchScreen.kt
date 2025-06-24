@@ -1,4 +1,4 @@
-package com.example.bookandfriend.presentation.screens.library
+package com.example.bookandfriend.presentation.screens.random_search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,13 +16,13 @@ import com.example.bookandfriend.presentation.navigation.BottomBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LibraryScreen(
+fun RandomSearchScreen(
     navController: NavController
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Favourites") }
+                title = { Text("Random book") }
             )
         },
         bottomBar = {
