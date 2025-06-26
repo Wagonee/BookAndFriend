@@ -12,6 +12,7 @@
     <color name="DT_textColor">#C3C3C3</color>
     <color name="DT_background">#111111</color>
     <color name="DT_secondBackground">#333333</color>
+    <color name="DT_thirdBackground">#222222</color>
     <color name="DT_shadowColor">#C3C3C3</color>
     <color name="DT_switch_inactive">#444444</color>
     <color name="DT_switch_active">#4F772D</color>
