@@ -5,21 +5,35 @@ import com.example.bookandfriend.data.network.OpenLibraryApiService
 import com.example.bookandfriend.data.network.RetrofitClient
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.domain.model.BookDetails
+import com.example.bookandfriend.domain.repository.LibraryRepository
 import com.example.bookandfriend.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 
 class SearchRepositoryImpl(
     private val apiService: OpenLibraryApiService = RetrofitClient.apiService,
+    private val libraryRepository: LibraryRepository,
     private val mapper: BookMapper = BookMapper()
 ) : SearchRepository {
-    override suspend fun searchBooks(query: String): Flow<Result<List<Book>>> = flow {
-        try {
-            val response = apiService.searchBooks(query)
-            val books = response.docs.map { mapper.mapDtoToDomain(it) }
-            emit(Result.success(books))
-        } catch (e: Exception) {
-            emit(Result.failure(e))
+    override suspend fun searchBooks(query: String): Flow<Result<List<Book>>> {
+        val likedBooksFlow: Flow<List<Book>> = libraryRepository.getAllBook()
+        val networkResultFlow: Flow<Result<List<Book>>> = flow {
+            try {
+                val response = apiService.searchBooks(query)
+                val books = response.docs.map { mapper.mapDtoToDomain(it) }
+                emit(Result.success(books))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
+            }
+        }
+        return networkResultFlow.combine(likedBooksFlow) { networkResult, likedBooks ->
+            val likedBookIds = likedBooks.map { it.id }.toSet()
+            networkResult.map { networkBooks ->
+                networkBooks.map { networkBook ->
+                    networkBook.copy(isLiked = likedBookIds.contains(networkBook.id))
+                }
+            }
         }
     }
 

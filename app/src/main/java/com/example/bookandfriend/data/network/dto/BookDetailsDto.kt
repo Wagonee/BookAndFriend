@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class BookDetailsDto(
     @SerializedName("description")
-    val description: DescriptionValue?,
+    val description: Any?,
     @SerializedName("subjects")
     val subjects: List<String>?
 )
