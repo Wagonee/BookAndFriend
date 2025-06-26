@@ -5,7 +5,7 @@
     <color name="LT_secondBackground">#EEE6DD</color>
     <color name="LT_thirdBackground">#DACABE</color>
     <color name="LT_shadowColor">#000000</color>
-    <color name="LT_switch_unactive">#E5E5E5</color>
+    <color name="LT_switch_inactive">#E5E5E5</color>
     <color name="LT_switch_active">#DACABE</color>
     <color name="LT_switch_circle">#FAFAFA</color>
 
@@ -13,11 +13,11 @@
     <color name="DT_background">#111111</color>
     <color name="DT_secondBackground">#333333</color>
     <color name="DT_shadowColor">#C3C3C3</color>
-    <color name="DT_switch_unactive">#444444</color>
+    <color name="DT_switch_inactive">#444444</color>
     <color name="DT_switch_active">#4F772D</color>
     <color name="DT_switch_circle">#FAFAFA</color>
 
-    <color name="heart_unactive">#C3C3C3</color>
+    <color name="heart_inactive">#C3C3C3</color>
     <color name="heart_active">#FF0909</color>
     <color name="dice_color">#FAFAFA</color>
 </resources>

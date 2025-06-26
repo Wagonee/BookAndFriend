@@ -1,14 +1,12 @@
 package com.example.bookandfriend.presentation.ui.theme
 
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -32,26 +30,63 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+data class CustomColors(
+    val textColor: Color,
+    val background: Color,
+    val secondBackground: Color,
+    val thirdBackground: Color,
+    val shadowColor: Color,
+    val switchInactive: Color,
+    val switchActive: Color,
+    val switchCircle: Color,
+    val heartInactive: Color,
+    val heartActive: Color,
+    val diceColor: Color
+)
+
+val LightCustomColors = CustomColors(
+    textColor = LT_textColor,
+    background = LT_background,
+    secondBackground = LT_secondBackground,
+    thirdBackground = LT_thirdBackground,
+    shadowColor = LT_shadowColor,
+    switchInactive = LT_switch_inactive,
+    switchActive = LT_switch_active,
+    switchCircle = LT_switch_circle,
+    heartInactive = HeartInactive,
+    heartActive = HeartActive,
+    diceColor = DiceColor
+)
+
+val DarkCustomColors = CustomColors(
+    textColor = DT_textColor,
+    background = DT_background,
+    secondBackground = DT_secondBackground,
+    thirdBackground = DT_secondBackground,
+    shadowColor = DT_shadowColor,
+    switchInactive = DT_switch_inactive,
+    switchActive = DT_switch_active,
+    switchCircle = DT_switch_circle,
+    heartInactive = HeartInactive,
+    heartActive = HeartActive,
+    diceColor = DiceColor
+)
+
+val LocalCustomColors = staticCompositionLocalOf { LightCustomColors }
+
 @Composable
 fun BookAndFriendTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    darkTheme: Boolean,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val customColors = if (darkTheme) DarkCustomColors else LightCustomColors
+    val materialColors = if (darkTheme) darkColorScheme() else lightColorScheme()
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+    CompositionLocalProvider(LocalCustomColors provides customColors) {
+        MaterialTheme(
+            colorScheme = materialColors,
+            typography = Typography,
+            content = content
+        )
     }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
 }
