@@ -39,24 +39,29 @@ class SearchRepositoryImpl @Inject constructor(
 
     override suspend fun getRandomBook(
         genre: String?,
-        century: Int?
+        century: Int?,
+        language: String?
     ): Result<Book> {
         return try {
-            val query = when {
-                !genre.isNullOrBlank() -> "subject:\"$genre\""
-                century != null -> {
-                    val startYear = (century - 1) * 100 + 1
-                    val endYear = century * 100
-                    "first_publish_year:[${startYear} TO ${endYear}]"
-                }
-
-                else -> return Result.failure(IllegalArgumentException("No criteria of random search were added."))
+            val queryParts = mutableListOf<String>()
+            if (!genre.isNullOrBlank()) {
+                queryParts.add("subject:\"$genre\"")
             }
+            if (century != null) {
+                val startYear = (century - 1) * 100 + 1
+                val endYear = century * 100
+                queryParts.add("first_publish_year:[${startYear} TO ${endYear}]")
+            }
+            if (!language.isNullOrBlank()) {
+                queryParts.add("language:$language")
+            }
+            if (queryParts.isEmpty()) {
+                return Result.failure(IllegalArgumentException("No criteria of random search were added."))
+            }
+            val query = queryParts.joinToString(" AND ")
             val response = apiService.searchBooks(query)
             val randomBookDto = response.docs.randomOrNull()
-            if (randomBookDto == null) {
-                return Result.failure(NoSuchElementException("No books with these parameters were found."))
-            }
+                ?: return Result.failure(NoSuchElementException("No books with these parameters were found."))
             val randomBook = mapper.mapDtoToDomain(randomBookDto)
             Result.success(randomBook)
         } catch (e: Exception) {

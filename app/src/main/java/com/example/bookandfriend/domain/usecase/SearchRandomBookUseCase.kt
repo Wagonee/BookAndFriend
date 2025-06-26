@@ -5,7 +5,7 @@ import com.example.bookandfriend.domain.repository.SearchRepository
 import javax.inject.Inject
 
 class SearchRandomBookUseCase @Inject constructor(private val repository: SearchRepository) {
-    suspend operator fun invoke(genre: String?, century: Int?): Result<Book> {
-        return repository.getRandomBook(genre, century)
+    suspend operator fun invoke(genre: String?, century: Int?, language: String?): Result<Book> {
+        return repository.getRandomBook(genre, century, language)
     }
 }

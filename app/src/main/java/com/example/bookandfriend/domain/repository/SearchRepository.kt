@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
     suspend fun searchBooks(query: String): Flow<Result<List<Book>>>
-    suspend fun getRandomBook(genre: String?, century: Int?): Result<Book>
+    suspend fun getRandomBook(genre: String?, century: Int?, language: String?): Result<Book>
     suspend fun getBookDetails(workId: String): Result<BookDetails>
 }
