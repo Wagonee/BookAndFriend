@@ -2,7 +2,6 @@ package com.example.bookandfriend.data.repository
 
 import com.example.bookandfriend.data.mappers.BookMapper
 import com.example.bookandfriend.data.network.OpenLibraryApiService
-import com.example.bookandfriend.data.network.RetrofitClient
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.domain.model.BookDetails
 import com.example.bookandfriend.domain.repository.LibraryRepository
@@ -10,11 +9,12 @@ import com.example.bookandfriend.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class SearchRepositoryImpl(
-    private val apiService: OpenLibraryApiService = RetrofitClient.apiService,
+class SearchRepositoryImpl @Inject constructor(
+    private val apiService: OpenLibraryApiService,
     private val libraryRepository: LibraryRepository,
-    private val mapper: BookMapper = BookMapper()
+    private val mapper: BookMapper
 ) : SearchRepository {
     override suspend fun searchBooks(query: String): Flow<Result<List<Book>>> {
         val likedBooksFlow: Flow<List<Book>> = libraryRepository.getAllBook()

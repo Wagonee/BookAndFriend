@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.example.bookandfriend.data.database.AppDatabase
+import com.example.bookandfriend.data.database.dao.LibraryDao
 import com.example.bookandfriend.data.database.dao.SettingsDao
 import com.example.bookandfriend.data.database.entity.Settings
 import dagger.Module
@@ -35,6 +36,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideSettingsDao(database: AppDatabase): SettingsDao = database.settingsDao()
+
+    @Provides
+    @Singleton
+    fun provideLibraryDao(db: AppDatabase): LibraryDao = db.libraryDao()
 
     // Вставка дефолтных параметров настроек если их нет в БД.
     @Provides

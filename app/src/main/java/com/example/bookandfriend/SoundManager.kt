@@ -19,7 +19,7 @@ class SoundManager(context: Context) {
             .setAudioAttributes(attributes)
             .build()
 
-        sounds[R.raw.ahhh_sound] = soundPool.load(context, R.raw.ahhh_sound, 1)
+        sounds[R.raw.click_sound] = soundPool.load(context, R.raw.click_sound, 1)
     }
 
     fun playSound(soundResId: Int) {

@@ -4,8 +4,9 @@ import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.domain.repository.LibraryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class SearchInLibraryUseCase(private val repository: LibraryRepository) {
+class SearchInLibraryUseCase @Inject constructor(private val repository: LibraryRepository) {
     suspend operator fun invoke(query: String): Flow<List<Book>> {
         return repository.getAllBook().map { books ->
             if (query.isBlank()) {

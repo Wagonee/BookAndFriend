@@ -5,8 +5,9 @@ import com.example.bookandfriend.data.network.dto.BookDto
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.domain.model.BookDetails
 import com.google.gson.internal.LinkedTreeMap
+import javax.inject.Inject
 
-class BookMapper {
+class BookMapper @Inject constructor() {
     fun mapDtoToDomain(dto: BookDto): Book {
         return Book(
             id = dto.key.substringAfter("/works/"),
