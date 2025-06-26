@@ -6,8 +6,10 @@ import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.domain.repository.LibraryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class LibraryRepositoryImpl(private val libraryDao: LibraryDao) : LibraryRepository {
+class LibraryRepositoryImpl @Inject constructor(private val libraryDao: LibraryDao) :
+    LibraryRepository {
     override suspend fun addBook(book: Book) {
         val repositoryBook = book.toEntity()
         libraryDao.addBook(repositoryBook)

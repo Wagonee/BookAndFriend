@@ -2,8 +2,9 @@ package com.example.bookandfriend.domain.usecase
 
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.domain.repository.SearchRepository
+import javax.inject.Inject
 
-class GetBookDetailsUseCase(private val repository: SearchRepository) {
+class GetBookDetailsUseCase @Inject constructor(private val repository: SearchRepository) {
     suspend operator fun invoke(book: Book): Result<Book> {
 
         if (book.description != null && book.genres != null) {

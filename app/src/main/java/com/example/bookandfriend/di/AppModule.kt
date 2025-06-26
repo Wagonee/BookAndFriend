@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.example.bookandfriend.data.database.AppDatabase
+import com.example.bookandfriend.data.database.dao.LibraryDao
 import com.example.bookandfriend.data.database.dao.SettingsDao
 import com.example.bookandfriend.data.database.entity.Settings
 import com.example.bookandfriend.data.repository.SettingsRepositoryImpl
@@ -30,13 +31,10 @@ object AppModule {
             context,
             AppDatabase::class.java,
             "book-and-friend-db"
-        ).fallbackToDestructiveMigration(false).build()
+        )
+            .fallbackToDestructiveMigration(false)
+            .build()
     }
-
-    // DAO для работы с настройками.
-    @Provides
-    @Singleton
-    fun provideSettingsDao(database: AppDatabase): SettingsDao = database.settingsDao()
 
     // Репозиторий для работы с настройками
     @Provides
@@ -44,6 +42,16 @@ object AppModule {
     fun provideSettingsRepository(
         dao: SettingsDao
     ): SettingsRepository = SettingsRepositoryImpl(dao)
+
+    // DAO для работы с настройками.
+    @Provides
+    @Singleton
+    fun provideSettingsDao(database: AppDatabase): SettingsDao = database.settingsDao()
+
+    @Provides
+    @Singleton
+    fun provideLibraryDao(db: AppDatabase): LibraryDao = db.libraryDao()
+
 
     // Вставка дефолтных параметров настроек если их нет в БД.
     @Provides
