@@ -40,7 +40,7 @@ class MainScreenVM @Inject constructor(
 
 
     private fun updateSearchQuery(query: String) {
-        _state.update { it.copy(query = query) }
+        _state.update { it.copy(query = query, searchExecuted = false) }
     }
 
     private fun searchBooks(query: String) {
@@ -51,11 +51,11 @@ class MainScreenVM @Inject constructor(
 
         viewModelScope.launch {
             searchBooksUseCase(query)
-                .onStart { _state.update { it.copy(isLoading = true) } }.catch { throwable ->
+                .onStart { _state.update { it.copy(isLoading = true, searchExecuted = true) } }.catch { throwable ->
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            error = throwable.message
+                            error = throwable.message,
                         )
                     }
                 }
@@ -135,8 +135,9 @@ sealed interface MainScreenCommand {
 }
 
 data class MainScreenState(
-    val query: String = "",
+    var query: String = "",
     val bookList: List<Book> = listOf(),
     val isLoading: Boolean = false,
+    val searchExecuted: Boolean = false,
     val error: String? = null
 )

@@ -46,7 +46,6 @@ class LibraryVM @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-
     fun processCommand(command: LibraryCommand) {
         when(command) {
             is LibraryCommand.InputSearchQuery -> { _query.update { command.query.trim() }}
@@ -55,13 +54,11 @@ class LibraryVM @Inject constructor(
         }
     }
 
-
     private fun removeBook(book: Book) {
         viewModelScope.launch {
             removeFromLibraryUseCase(book.id)
         }
     }
-
 }
 
 
