@@ -3,7 +3,7 @@ package com.example.bookandfriend.presentation.screens.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookandfriend.data.database.entity.Settings
-import com.example.bookandfriend.data.repository.SettingsRepository
+import com.example.bookandfriend.domain.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
