@@ -20,6 +20,4 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindLibraryRepository(libraryRepositoryImpl: LibraryRepositoryImpl): LibraryRepository
-
-
 }
