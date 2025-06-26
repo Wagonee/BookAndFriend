@@ -3,7 +3,7 @@ package com.example.bookandfriend.presentation.screens.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookandfriend.data.database.entity.Settings
-import com.example.bookandfriend.data.repository.SettingsRepository
+import com.example.bookandfriend.data.repository.SettingsRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsVM @Inject constructor(
-    private val repository: SettingsRepository
+    private val repository: SettingsRepositoryImpl
 ) : ViewModel() {
 
     // Создаем поток настроек с дефолтным значением.

@@ -7,6 +7,7 @@ import com.example.bookandfriend.data.database.AppDatabase
 import com.example.bookandfriend.data.database.dao.LibraryDao
 import com.example.bookandfriend.data.database.dao.SettingsDao
 import com.example.bookandfriend.data.database.entity.Settings
+import com.example.bookandfriend.data.repository.SettingsRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,9 @@ object AppModule {
             context,
             AppDatabase::class.java,
             "book-and-friend-db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(false)
+            .build()
     }
 
     // DAO для работы с настройками.
@@ -40,6 +43,13 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLibraryDao(db: AppDatabase): LibraryDao = db.libraryDao()
+
+    // Репозиторий для работы с настройками
+    @Provides
+    @Singleton
+    fun provideSettingsRepository(
+        dao: SettingsDao
+    ): SettingsRepositoryImpl = SettingsRepositoryImpl(dao)
 
     // Вставка дефолтных параметров настроек если их нет в БД.
     @Provides
