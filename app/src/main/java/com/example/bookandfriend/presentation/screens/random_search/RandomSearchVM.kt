@@ -8,12 +8,21 @@ import com.example.bookandfriend.domain.usecase.GetBookDetailsUseCase
 import com.example.bookandfriend.domain.usecase.RemoveFromLibraryUseCase
 import com.example.bookandfriend.domain.usecase.SearchRandomBookUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+private data class RandomSearchParams(val genre: String?, val century: Int?, val language: String?)
+
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class RandomSearchVM @Inject constructor(
     private val randomBookUseCase: SearchRandomBookUseCase,
@@ -23,41 +32,47 @@ class RandomSearchVM @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RandomSearchState())
-    private val state = _state.asStateFlow()
-
+    val state = _state.asStateFlow()
+    private val _searchTrigger = MutableStateFlow<RandomSearchParams?>(null)
     fun processCommand(command: RandomSearchCommand) {
         when (command) {
             is RandomSearchCommand.AddBookToLibrary -> addToLibrary(command.book)
             is RandomSearchCommand.GetBookDetails -> getBookDetails(command.book, command.onSuccess)
-            is RandomSearchCommand.GetRandomBook -> getRandomBook(
-                command.century,
-                command.genre,
-                command.language
-            )
+            is RandomSearchCommand.GetRandomBook -> {
+                _searchTrigger.value =
+                    RandomSearchParams(command.genre, command.century, command.language)
+            }
 
             is RandomSearchCommand.RemoveBookFromLibrary -> removeFromLibrary(command.bookId)
         }
     }
 
-
-    private fun getRandomBook(century: Int?, genre: String?, language: String?) {
+    init {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, error = null) }
-            val result = randomBookUseCase(genre, century, language)
-            result.onSuccess { book -> _state.update { it.copy(isLoading = false, book = book) } }
-                .onFailure { throwable ->
-                    _state.update {
-                        it.copy(
-                            book = null,
-                            error = throwable.message,
-                            isLoading = false
-                        )
+            _searchTrigger
+                .filterNotNull()
+                .flatMapLatest { params ->
+                    flow {
+                        emit(randomBookUseCase(params.genre, params.century, params.language))
+                    }.onStart {
+                        _state.update { it.copy(isLoading = true, error = null, book = null) }
                     }
                 }
-
+                .collect { result ->
+                    result.onSuccess { book ->
+                        _state.update { it.copy(isLoading = false, book = book) }
+                    }.onFailure { throwable ->
+                        _state.update {
+                            it.copy(
+                                book = null,
+                                error = throwable.message,
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
         }
     }
-
 
     private fun addToLibrary(book: Book) {
         viewModelScope.launch {

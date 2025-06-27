@@ -32,11 +32,9 @@ fun BookItem(
     onLikeClick: () -> Unit
 ) {
     Card(
+        onClick = onItemClick,
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                onItemClick()
-            })
+            .fillMaxWidth())
     {
         Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically)
         {
