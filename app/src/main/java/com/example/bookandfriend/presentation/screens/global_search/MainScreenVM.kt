@@ -8,14 +8,19 @@ import com.example.bookandfriend.domain.usecase.GetBookDetailsUseCase
 import com.example.bookandfriend.domain.usecase.RemoveFromLibraryUseCase
 import com.example.bookandfriend.domain.usecase.SearchBooksUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class MainScreenVM @Inject constructor(
     private val searchBooksUseCase: SearchBooksUseCase,
@@ -32,32 +37,30 @@ class MainScreenVM @Inject constructor(
                 is MainScreenCommand.AddToLibrary -> addToLibrary(command.book)
                 is MainScreenCommand.GetBookDetails -> getBookDetails(command.book, command.onSuccess)
                 is MainScreenCommand.RemoveFromLibrary -> removeFromLibrary(command.bookId)
-                is MainScreenCommand.SearchBooks -> searchBooks(command.query)
+                is MainScreenCommand.SearchBooks -> _searchTrigger.value = command.query
                 is MainScreenCommand.UpdateQuery -> updateSearchQuery(command.query)
             }
         }
     }
 
+    private val _searchTrigger = MutableStateFlow("")
 
-    private fun updateSearchQuery(query: String) {
-        _state.update { it.copy(query = query, searchExecuted = false) }
-    }
-
-    private fun searchBooks(query: String) {
-        if (query.isBlank()) {
-            _state.update { it.copy(bookList = emptyList()) }
-            return
-        }
-
+    init {
         viewModelScope.launch {
-            searchBooksUseCase(query)
-                .onStart { _state.update { it.copy(isLoading = true, searchExecuted = true) } }.catch { throwable ->
-                    _state.update {
-                        it.copy(
-                            isLoading = false,
-                            error = throwable.message,
-                        )
-                    }
+            _searchTrigger
+                .filter { it.isNotBlank() }
+                .distinctUntilChanged()
+                .flatMapLatest { query ->
+                    searchBooksUseCase(query)
+                        .onStart { _state.update { it.copy(isLoading = true, searchExecuted = true, error = null) } }
+                        .catch { throwable ->
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    error = throwable.message,
+                                )
+                            }
+                        }
                 }
                 .collect { result ->
                     result.onSuccess { books ->
@@ -77,9 +80,12 @@ class MainScreenVM @Inject constructor(
                     }
                 }
         }
-
     }
 
+
+    private fun updateSearchQuery(query: String) {
+        _state.update { it.copy(query = query, searchExecuted = false, bookList = emptyList()) }
+    }
 
     private fun addToLibrary(book: Book) {
         viewModelScope.launch {

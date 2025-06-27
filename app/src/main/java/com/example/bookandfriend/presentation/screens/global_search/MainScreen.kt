@@ -110,7 +110,7 @@ fun MainScreen(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(state.bookList) { book ->
+                    items(state.bookList, key = {book -> book.id}) { book ->
                         BookItem(
                             book,
                             onItemClick = {
