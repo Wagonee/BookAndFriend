@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -80,7 +81,7 @@ fun RandomSearchScreen(
 
     val languages = remember {
         listOf(
-            SelectableItem("Any language", ""),
+            SelectableItem("Any lang.", ""),
             SelectableItem("English", "eng"),
             SelectableItem("Russian", "rus"),
             SelectableItem("French", "fra"),
@@ -135,55 +136,67 @@ fun RandomSearchScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "For searching choose at least one parameter.", textAlign = TextAlign.Center, fontSize = 12.sp, fontWeight = FontWeight.Thin)
-            ExposedDropdownMenuBox(
-                expanded = expandedGenre,
-                onExpandedChange = { expandedGenre = !expandedGenre },
+            Text(
+                text = "For searching choose at least one parameter.",
+                textAlign = TextAlign.Center, fontSize = 16.sp,
+                fontWeight = FontWeight.Thin
+            )
+
+            Box(
                 modifier = Modifier
-                    .width(270.dp)
-                    .clip(
-                        if (expandedGenre) {
-                            RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
-                        } else {
-                            RoundedCornerShape(30.dp)
-                        }
-                    )
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
-                TextField(
-                    value = selectedGenre.displayName,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedGenre) },
-                    modifier = Modifier
-                        .menuAnchor()
-                        .background(color = customColors.secondBackground),
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = customColors.secondBackground,
-                        unfocusedContainerColor = customColors.secondBackground,
-                        focusedTextColor = customColors.textColor,
-                        unfocusedTextColor = customColors.textColor,
-                        focusedIndicatorColor = customColors.secondBackground,
-                        unfocusedIndicatorColor = customColors.secondBackground
-                    )
-                )
-                ExposedDropdownMenu(
+                ExposedDropdownMenuBox(
                     expanded = expandedGenre,
-                    onDismissRequest = { expandedGenre = false },
-                    containerColor = customColors.secondBackground,
+                    onExpandedChange = { expandedGenre = !expandedGenre },
+                    modifier = Modifier
+                        .fillMaxWidth()
                 ) {
-                    genres.forEach { genre ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = genre.displayName,
-                                    color = customColors.textColor
-                                )
-                            },
-                            onClick = {
-                                selectedGenre = genre
-                                expandedGenre = false
-                            }
+                    TextField(
+                        value = selectedGenre.displayName,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedGenre) },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
+                            .clip(
+                                if (expandedGenre) {
+                                    RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
+                                } else {
+                                    RoundedCornerShape(30.dp)
+                                }
+                            )
+                            .background(color = customColors.secondBackground),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = customColors.secondBackground,
+                            unfocusedContainerColor = customColors.secondBackground,
+                            focusedTextColor = customColors.textColor,
+                            unfocusedTextColor = customColors.textColor,
+                            focusedIndicatorColor = customColors.secondBackground,
+                            unfocusedIndicatorColor = customColors.secondBackground
                         )
+                    )
+                    ExposedDropdownMenu(
+                        expanded = expandedGenre,
+                        onDismissRequest = { expandedGenre = false },
+                        containerColor = customColors.secondBackground
+                    ) {
+                        genres.forEach { genre ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = genre.displayName,
+                                        color = customColors.textColor
+                                    )
+                                },
+                                onClick = {
+                                    selectedGenre = genre
+                                    expandedGenre = false
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -196,7 +209,7 @@ fun RandomSearchScreen(
                     expanded = expandedLanguage,
                     onExpandedChange = { expandedLanguage = !expandedLanguage },
                     modifier = Modifier
-                        .width(120.dp)
+                        .weight(0.4f)
                         .clip(
                             if (expandedLanguage) {
                                 RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
@@ -242,7 +255,7 @@ fun RandomSearchScreen(
                     expanded = expandedDate,
                     onExpandedChange = { expandedDate = !expandedDate },
                     modifier = Modifier
-                        .width(120.dp)
+                        .weight(0.4f)
                         .clip(
                             if (expandedDate) {
                                 RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)

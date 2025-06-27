@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,9 +44,7 @@ fun MainScreen(
 ) {
     val customColors = LocalCustomColors.current
 
-
     val state by vm.state.collectAsState()
-
 
     Scaffold(
         topBar = {
@@ -89,7 +88,11 @@ fun MainScreen(
 
             if (state.query.isNotBlank() && !state.searchExecuted) {
                 Button(
-                    onClick = { vm.processCommand(MainScreenCommand.SearchBooks(state.query)) }
+                    onClick = { vm.processCommand(MainScreenCommand.SearchBooks(state.query)) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = customColors.switchActive,
+                        contentColor = customColors.switchCircle
+                    )
                 ) {
                     Text(text = "Search")
                 }
@@ -99,9 +102,7 @@ fun MainScreen(
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
-
             }
-
 
             else if (state.error != null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

@@ -1,5 +1,6 @@
 package com.example.bookandfriend.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +26,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.bookandfriend.domain.model.Book
+import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
 @Composable
 fun BookItem(
@@ -31,11 +34,18 @@ fun BookItem(
     onItemClick: () -> Unit,
     onLikeClick: () -> Unit
 ) {
+    val customColors = LocalCustomColors.current
+
     Card(
-        onClick = onItemClick,
         modifier = Modifier
-            .fillMaxWidth())
-    {
+            .fillMaxWidth()
+            .clickable {
+                onItemClick()
+            },
+        colors = CardDefaults.cardColors(
+            containerColor = customColors.secondBackground
+        )
+    ) {
         Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically)
         {
             AsyncImage(
@@ -46,8 +56,16 @@ fun BookItem(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = book.title, style = MaterialTheme.typography.titleMedium)
-                Text(text = book.author, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = book.title,
+                    color = customColors.textColor,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = book.author,
+                    color = customColors.textColor,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
             IconButton(onClick = onLikeClick) {
                 Icon(
