@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.navigation.BottomBar
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
@@ -37,7 +38,8 @@ import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 @Composable
 fun MainScreen(
     navController: NavController,
-    vm: MainScreenVM = hiltViewModel()
+    vm: MainScreenVM = hiltViewModel(),
+    onBookClick: (Book) -> Unit
 ) {
     val customColors = LocalCustomColors.current
 
@@ -117,12 +119,7 @@ fun MainScreen(
                                 vm.processCommand(
                                     MainScreenCommand.GetBookDetails(
                                         book,
-                                        onSuccess = { book ->
-                                            Log.d(
-                                                "Book detail",
-                                                "Description ${book.description}, Genres ${book.genres.toString()}"
-                                            )
-                                        })
+                                        onSuccess = onBookClick)
                                 )
                             }, onLikeClick = {
                                 if (!book.isLiked) {

@@ -25,14 +25,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.navigation.BottomBar
+import com.example.bookandfriend.presentation.screens.global_search.MainScreenCommand
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(
     navController: NavController,
-    vm: LibraryVM = hiltViewModel()
+    vm: LibraryVM = hiltViewModel(),
+    onBookClick: (Book) -> Unit
 ) {
     val customColors = LocalCustomColors.current
     val state by vm.state.collectAsState()
@@ -83,7 +86,7 @@ fun LibraryScreen(
                             vm.processCommand(
                                 LibraryCommand.ShowDetails(
                                     book,
-                                    onShowed = { book -> {} })
+                                    onShowed = onBookClick)
                             )
                         },
                         onLikeClick = { vm.processCommand(LibraryCommand.RemoveBook(book)) }

@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.bookandfriend.R
+import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.components.BookItem
 import com.example.bookandfriend.presentation.navigation.BottomBar
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
@@ -56,7 +57,8 @@ private data class CenturyItem(val displayName: String, val apiValue: Int)
 @Composable
 fun RandomSearchScreen(
     navController: NavController,
-    vm: RandomSearchVM = hiltViewModel()
+    vm: RandomSearchVM = hiltViewModel(),
+    onBookClick: (Book) -> Unit
 ) {
     val customColors = LocalCustomColors.current
 
@@ -330,7 +332,12 @@ fun RandomSearchScreen(
                             vm.processCommand(RandomSearchCommand.AddBookToLibrary(state.book!!))
                         }
                     },
-                    onItemClick = { }
+                    onItemClick = {
+                        vm.processCommand(RandomSearchCommand.GetBookDetails(
+                            state.book!!,
+                            onSuccess = onBookClick
+                        ))
+                    }
                 )
             }
         }
