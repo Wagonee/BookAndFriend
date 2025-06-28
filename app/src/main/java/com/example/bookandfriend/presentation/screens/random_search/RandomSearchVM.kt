@@ -3,6 +3,7 @@ package com.example.bookandfriend.presentation.screens.random_search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookandfriend.domain.model.Book
+import com.example.bookandfriend.domain.sound.SoundPlayer
 import com.example.bookandfriend.domain.usecase.AddToLibraryUseCase
 import com.example.bookandfriend.domain.usecase.GetBookDetailsUseCase
 import com.example.bookandfriend.domain.usecase.RemoveFromLibraryUseCase
@@ -28,7 +29,8 @@ class RandomSearchVM @Inject constructor(
     private val randomBookUseCase: SearchRandomBookUseCase,
     private val addToLibraryUseCase: AddToLibraryUseCase,
     private val removeFromLibraryUseCase: RemoveFromLibraryUseCase,
-    private val getBookDetailsUseCase: GetBookDetailsUseCase
+    private val getBookDetailsUseCase: GetBookDetailsUseCase,
+    private val soundPlayer: SoundPlayer
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RandomSearchState())
@@ -45,6 +47,10 @@ class RandomSearchVM @Inject constructor(
 
             is RandomSearchCommand.RemoveBookFromLibrary -> removeFromLibrary(command.bookId)
         }
+    }
+
+    fun playSound() {
+        soundPlayer.playClickSound()
     }
 
     init {

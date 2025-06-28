@@ -3,6 +3,7 @@ package com.example.bookandfriend.presentation.screens.global_search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookandfriend.domain.model.Book
+import com.example.bookandfriend.domain.sound.SoundPlayer
 import com.example.bookandfriend.domain.usecase.AddToLibraryUseCase
 import com.example.bookandfriend.domain.usecase.GetBookDetailsUseCase
 import com.example.bookandfriend.domain.usecase.RemoveFromLibraryUseCase
@@ -27,6 +28,7 @@ class MainScreenVM @Inject constructor(
     private val addToLibraryUseCase: AddToLibraryUseCase,
     private val removeFromLibraryUseCase: RemoveFromLibraryUseCase,
     private val getBookDetailsUseCase: GetBookDetailsUseCase,
+    private val soundPlayer: SoundPlayer
 ) : ViewModel() {
     private val _state = MutableStateFlow(MainScreenState())
     val state = _state.asStateFlow()
@@ -41,6 +43,10 @@ class MainScreenVM @Inject constructor(
                 is MainScreenCommand.UpdateQuery -> updateSearchQuery(command.query)
             }
         }
+    }
+
+    fun playSound() {
+        soundPlayer.playClickSound()
     }
 
     private val _searchTrigger = MutableStateFlow("")

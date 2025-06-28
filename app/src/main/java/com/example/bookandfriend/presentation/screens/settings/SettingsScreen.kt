@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,14 +52,8 @@ fun SettingsScreen(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = customColors.background,
+                    containerColor = Color.Transparent,
                     titleContentColor = customColors.textColor
-                ),
-                modifier = Modifier.shadow(
-                    elevation = 8.dp,
-                    shape = RectangleShape,
-                    ambientColor = customColors.shadowColor,
-                    spotColor = customColors.shadowColor
                 )
             )
         },

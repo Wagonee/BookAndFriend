@@ -1,8 +1,9 @@
-package com.example.bookandfriend
+package com.example.bookandfriend.data.sound
 
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.SoundPool
+import com.example.bookandfriend.R
 
 class SoundManager(context: Context) {
     private val soundPool: SoundPool
@@ -15,7 +16,7 @@ class SoundManager(context: Context) {
             .build()
 
         soundPool = SoundPool.Builder()
-            .setMaxStreams(5)
+            .setMaxStreams(1)
             .setAudioAttributes(attributes)
             .build()
 

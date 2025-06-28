@@ -1,5 +1,6 @@
 package com.example.bookandfriend.presentation.navigation
 
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,46 +28,48 @@ fun NavigationFunc() {
         navController.navigate("BookInfo/$encodedJson")
     }
 
-    NavHost(
-        navController = navController,
-        startDestination = "MainScreen"
-    ) {
-        composable("MainScreen") {
-            MainScreen(
-                navController = navController,
-                onBookClick = onBookClick
-            )
-        }
+    Surface {
+        NavHost(
+            navController = navController,
+            startDestination = "MainScreen"
+        ) {
+            composable("MainScreen") {
+                MainScreen(
+                    navController = navController,
+                    onBookClick = onBookClick
+                )
+            }
 
-        composable("RandomSearch") {
-            RandomSearchScreen(
-                navController = navController,
-                onBookClick = onBookClick
-            )
-        }
+            composable("RandomSearch") {
+                RandomSearchScreen(
+                    navController = navController,
+                    onBookClick = onBookClick
+                )
+            }
 
-        composable("Library") {
-            LibraryScreen(
-                navController = navController,
-                onBookClick = onBookClick
-            )
-        }
+            composable("Library") {
+                LibraryScreen(
+                    navController = navController,
+                    onBookClick = onBookClick
+                )
+            }
 
-        composable("Settings") {
-            SettingsScreen(navController = navController)
-        }
+            composable("Settings") {
+                SettingsScreen(navController = navController)
+            }
 
-        composable(
-            route = "BookInfo/{bookJson}",
-            arguments = listOf(navArgument("bookJson") {
-                type = NavType.StringType
-            })
-        ) { backStackEntry ->
-            val bookJson = backStackEntry.arguments?.getString("bookJson") ?: return@composable
-            val decodedJson = URLDecoder.decode(bookJson ?: "", StandardCharsets.UTF_8.toString())
-            val book = Gson().fromJson(decodedJson, Book::class.java)
+            composable(
+                route = "BookInfo/{bookJson}",
+                arguments = listOf(navArgument("bookJson") {
+                    type = NavType.StringType
+                })
+            ) { backStackEntry ->
+                val bookJson = backStackEntry.arguments?.getString("bookJson") ?: return@composable
+                val decodedJson = URLDecoder.decode(bookJson ?: "", StandardCharsets.UTF_8.toString())
+                val book = Gson().fromJson(decodedJson, Book::class.java)
 
-            BookInfoScreen(navController, book)
+                BookInfoScreen(navController, book)
+            }
         }
     }
 }
