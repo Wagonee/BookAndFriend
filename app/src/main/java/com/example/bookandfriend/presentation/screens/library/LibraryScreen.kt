@@ -19,16 +19,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.bookandfriend.R
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.navigation.BottomBar
-import com.example.bookandfriend.presentation.screens.global_search.MainScreenCommand
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +44,7 @@ fun LibraryScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Favourites",
+                        text = stringResource(id = R.string.library_screen_title),
                         textAlign = TextAlign.Center
                     )
                 },
@@ -86,12 +85,8 @@ fun LibraryScreen(
                         },
                         onLikeClick = { vm.processCommand(LibraryCommand.RemoveBook(book)) }
                     )
-
                 }
             }
         }
     }
 }
-
-
-

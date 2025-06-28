@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">BookAndFriend</string>
+
+    <string name="book_info_title">О книге</string>
+    <string name="book_info_back_button_content_description">Назад</string>
+    <string name="book_cover_content_description">Обложка книги</string>
+    <string name="book_info_book_title">Название: %1$s</string>
+    <string name="book_info_author">Автор: %1$s</string>
+    <string name="book_info_published">Опубликовано: %1$d</string>
+    <string name="book_info_language">Язык: %1$s</string>
+    <string name="book_info_genres">Жанры: %1$s</string>
+    <string name="book_info_description">Описание:\n%1$s</string>
+
+    <string name="main_screen_title">Book and Friend</string>
+    <string name="search_button">Поиск</string>
+
+    <string name="library_screen_title">Избранное</string>
+
+    <string name="random_search_title">Случайная книга</string>
+    <string name="random_search_prompt">Для поиска выберите хотя бы один параметр.</string>
+    <string name="genre_any">Любой жанр</string>
+    <string name="genre_fantasy">Фэнтези</string>
+    <string name="genre_science_fiction">Научная фантастика</string>
+    <string name="genre_romance">Романтика</string>
+    <string name="genre_mystery">Детектив</string>
+    <string name="genre_thriller">Триллер</string>
+    <string name="genre_horror">Ужасы</string>
+    <string name="genre_historical_fiction">Историческая проза</string>
+    <string name="genre_biography">Биография</string>
+    <string name="genre_classic">Классика</string>
+    <string name="genre_novel">Роман</string>
+    <string name="language_any">Любой язык</string>
+    <string name="language_english">Английский</string>
+    <string name="language_russian">Русский</string>
+    <string name="language_french">Французский</string>
+    <string name="language_german">Немецкий</string>
+    <string name="language_spanish">Испанский</string>
+    <string name="language_italian">Итальянский</string>
+    <string name="century_format">%1$d век</string>
+    <string name="century_any">Любой век</string>
+    <string name="random_button_content_description">Случайно</string>
+
+    <string name="settings_screen_title">Настройки</string>
+    <string name="settings_dark_theme">Включить/выключить темную тему</string>
+    <string name="settings_sound">Включить/выключить звук</string>
+
+    <string name="bottom_nav_search">Поиск</string>
+    <string name="bottom_nav_random">Случайно</string>
+    <string name="bottom_nav_library">Библиотека</string>
+    <string name="bottom_nav_settings">Настройки</string>
+
+    <string name="search_bar_placeholder">Введите что-нибудь…</string>
+
+    <string name="like_button_content_description">Кнопка "Нравится"</string>
+
+    <string name="unknown_author">Неизвестный автор</string>
+    <string name="no_description">Нет описания</string>
+    <string name="language_na">Н/Д</string>
+</resources>

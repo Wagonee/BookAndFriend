@@ -1,6 +1,5 @@
 package com.example.bookandfriend.presentation.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,8 +22,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.bookandfriend.R
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
@@ -50,7 +51,7 @@ fun BookItem(
         {
             AsyncImage(
                 model = "https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg",
-                contentDescription = "Book cover",
+                contentDescription = stringResource(id = R.string.book_cover_content_description),
                 modifier = Modifier.size(width = 50.dp, height = 80.dp),
                 contentScale = ContentScale.Crop,
             )
@@ -70,7 +71,7 @@ fun BookItem(
             IconButton(onClick = onLikeClick) {
                 Icon(
                     imageVector = if (book.isLiked) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                    contentDescription = "Like button",
+                    contentDescription = stringResource(id = R.string.like_button_content_description),
                     tint = if (book.isLiked) Color.Red else Color.Gray
                 )
             }

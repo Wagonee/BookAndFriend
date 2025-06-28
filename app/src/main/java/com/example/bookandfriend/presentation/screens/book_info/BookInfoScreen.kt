@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -23,17 +22,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.example.bookandfriend.R
 import com.example.bookandfriend.domain.model.Book
-import com.example.bookandfriend.presentation.navigation.BottomBar
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +40,6 @@ fun BookInfoScreen(
     book: Book
 ) {
     val customColors = LocalCustomColors.current
-
     val scrollState = rememberScrollState()
 
     Scaffold(
@@ -51,7 +47,7 @@ fun BookInfoScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "About the book",
+                        text = stringResource(id = R.string.book_info_title),
                         textAlign = TextAlign.Center
                     )
                 },
@@ -61,7 +57,7 @@ fun BookInfoScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.book_info_back_button_content_description),
                             tint = customColors.textColor
                         )
                     }
@@ -86,7 +82,7 @@ fun BookInfoScreen(
             book.coverId?.let { coverId ->
                 Image(
                     painter = rememberAsyncImagePainter("https://covers.openlibrary.org/b/id/${coverId}-M.jpg"),
-                    contentDescription = "Book cover",
+                    contentDescription = stringResource(id = R.string.book_cover_content_description),
                     modifier = Modifier
                         .size(width = 200.dp, height = 320.dp),
                     contentScale = ContentScale.Crop
@@ -94,41 +90,41 @@ fun BookInfoScreen(
             }
 
             Text(
-                text = "Title: ${book.title}",
+                text = stringResource(id = R.string.book_info_book_title, book.title),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Left
             )
 
             Text(
-                text = "Author: ${book.author}",
+                text = stringResource(id = R.string.book_info_author, book.author),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Left
             )
 
             book.publishYear?.let {
                 Text(
-                    text = "Published: $it",
+                    text = stringResource(id = R.string.book_info_published, it),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
             book.language?.let {
                 Text(
-                    text = "Language: $it",
+                    text = stringResource(id = R.string.book_info_language, it),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
             book.genres?.takeIf { it.isNotEmpty() }?.let {
                 Text(
-                    text = "Genres: ${it.joinToString(", ")}",
+                    text = stringResource(id = R.string.book_info_genres, it.joinToString(", ")),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
             book.description?.let {
                 Text(
-                    text ="Description:\n$it",
+                    text = stringResource(id = R.string.book_info_description, it),
                     modifier = Modifier.fillMaxWidth()
                 )
             }

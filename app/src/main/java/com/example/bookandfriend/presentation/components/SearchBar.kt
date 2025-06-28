@@ -17,9 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bookandfriend.R
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
 @Composable
@@ -59,7 +61,7 @@ fun SearchBar(
                 ) {
                     if (query.isEmpty() && !isFocused) {
                         Text(
-                            text = "Type something...",
+                            text = stringResource(id = R.string.search_bar_placeholder),
                             color = customColors.textColor.copy(alpha = 0.5f),
                             fontSize = 16.sp
                         )

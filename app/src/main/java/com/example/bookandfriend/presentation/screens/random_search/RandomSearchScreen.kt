@@ -1,45 +1,18 @@
 package com.example.bookandfriend.presentation.screens.random_search
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,40 +37,39 @@ fun RandomSearchScreen(
 ) {
     val customColors = LocalCustomColors.current
 
-    val genres = remember {
+    val genres =
         listOf(
-            SelectableItem("Any genre", ""),
-            SelectableItem("Fantasy", "fantasy"),
-            SelectableItem("Science Fiction", "science_fiction"),
-            SelectableItem("Romance", "romance"),
-            SelectableItem("Mystery", "mystery"),
-            SelectableItem("Thriller", "thriller"),
-            SelectableItem("Horror", "horror"),
-            SelectableItem("Historical Fiction", "historical_fiction"),
-            SelectableItem("Biography", "biography"),
-            SelectableItem("Classic", "classic"),
-            SelectableItem("Novel", "novel")
+            SelectableItem(stringResource(id = R.string.genre_any), ""),
+            SelectableItem(stringResource(id = R.string.genre_fantasy), "fantasy"),
+            SelectableItem(stringResource(id = R.string.genre_science_fiction), "science_fiction"),
+            SelectableItem(stringResource(id = R.string.genre_romance), "romance"),
+            SelectableItem(stringResource(id = R.string.genre_mystery), "mystery"),
+            SelectableItem(stringResource(id = R.string.genre_thriller), "thriller"),
+            SelectableItem(stringResource(id = R.string.genre_horror), "horror"),
+            SelectableItem(stringResource(id = R.string.genre_historical_fiction), "historical_fiction"),
+            SelectableItem(stringResource(id = R.string.genre_biography), "biography"),
+            SelectableItem(stringResource(id = R.string.genre_classic), "classic"),
+            SelectableItem(stringResource(id = R.string.genre_novel), "novel")
         )
-    }
 
-    val languages = remember {
+
+    val languages =
         listOf(
-            SelectableItem("Any lang.", ""),
-            SelectableItem("English", "eng"),
-            SelectableItem("Russian", "rus"),
-            SelectableItem("French", "fra"),
-            SelectableItem("German", "ger"),
-            SelectableItem("Spanish", "spa"),
-            SelectableItem("Italian", "ita")
+            SelectableItem(stringResource(id = R.string.language_any), ""),
+            SelectableItem(stringResource(id = R.string.language_english), "eng"),
+            SelectableItem(stringResource(id = R.string.language_russian), "rus"),
+            SelectableItem(stringResource(id = R.string.language_french), "fra"),
+            SelectableItem(stringResource(id = R.string.language_german), "ger"),
+            SelectableItem(stringResource(id = R.string.language_spanish), "spa"),
+            SelectableItem(stringResource(id = R.string.language_italian), "ita")
         )
-    }
 
-    val centuries = remember {
-        (1..21).map { CenturyItem("$it cent.", it) }
+
+    val centuries =
+        (1..21).map { CenturyItem(stringResource(id = R.string.century_format, it), it) }
             .toMutableList().apply {
-                add(0, CenturyItem("Any cent.", 0))
+                add(0, CenturyItem(stringResource(id = R.string.century_any), 0))
             }
-    }
 
 
     var selectedGenre by remember { mutableStateOf(genres.first()) }
@@ -113,7 +85,7 @@ fun RandomSearchScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Random book", textAlign = TextAlign.Center) },
+                title = { Text(text = stringResource(id = R.string.random_search_title), textAlign = TextAlign.Center) },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = Color.Transparent,
                     titleContentColor = customColors.textColor
@@ -132,7 +104,7 @@ fun RandomSearchScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "For searching choose at least one parameter.",
+                text = stringResource(id = R.string.random_search_prompt),
                 textAlign = TextAlign.Center, fontSize = 16.sp,
                 fontWeight = FontWeight.Thin
             )
@@ -321,7 +293,7 @@ fun RandomSearchScreen(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.dice_3d),
-                    contentDescription = "Random",
+                    contentDescription = stringResource(id = R.string.random_button_content_description),
                     tint = customColors.diceColor,
                     modifier = Modifier.size(200.dp)
                 )
@@ -350,6 +322,5 @@ fun RandomSearchScreen(
                 )
             }
         }
-
     }
 }

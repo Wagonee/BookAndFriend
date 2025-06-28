@@ -14,21 +14,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.bookandfriend.data.database.entity.Settings
+import com.example.bookandfriend.R
 import com.example.bookandfriend.presentation.navigation.BottomBar
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
@@ -39,7 +37,6 @@ fun SettingsScreen(
     vm: SettingsVM = hiltViewModel()
 ) {
     val customColors = LocalCustomColors.current
-
     val settings by vm.settings.collectAsState()
 
     Scaffold(
@@ -47,7 +44,7 @@ fun SettingsScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Settings",
+                        text = stringResource(id = R.string.settings_screen_title),
                         textAlign = TextAlign.Center
                     )
                 },
@@ -71,18 +68,17 @@ fun SettingsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SettingItem(
-                title = "Turn on/off dark theme",
+                title = stringResource(id = R.string.settings_dark_theme),
                 enabled = settings.darkThemeEnabled,
                 onCheckedChange = { vm.setDarkThemeEnabled(it) }
             )
 
             SettingItem(
-                title = "Turn on/off sound",
+                title = stringResource(id = R.string.settings_sound),
                 enabled = settings.soundEnabled,
                 onCheckedChange = { vm.setSoundEnabled(it) }
             )
         }
-
     }
 }
 

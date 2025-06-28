@@ -2,7 +2,6 @@ package com.example.bookandfriend.presentation.screens.global_search
 
 import com.example.bookandfriend.presentation.components.BookItem
 import SearchBar
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,15 +24,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.bookandfriend.BookAndFriendApplication
 import com.example.bookandfriend.R
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.navigation.BottomBar
@@ -47,7 +43,6 @@ fun MainScreen(
     onBookClick: (Book) -> Unit
 ) {
     val customColors = LocalCustomColors.current
-
     val state by vm.state.collectAsState()
 
     Scaffold(
@@ -55,7 +50,7 @@ fun MainScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Book and Friend",
+                        text = stringResource(id = R.string.main_screen_title),
                         textAlign = TextAlign.Center
                     )
                 },
@@ -95,7 +90,7 @@ fun MainScreen(
                         contentColor = customColors.switchCircle
                     )
                 ) {
-                    Text(text = "Search")
+                    Text(text = stringResource(id = R.string.search_button))
                 }
             }
 
@@ -103,9 +98,7 @@ fun MainScreen(
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
-            }
-
-            else if (state.error != null) {
+            } else if (state.error != null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(text = state.error.toString(), color = MaterialTheme.colorScheme.error)
                 }
