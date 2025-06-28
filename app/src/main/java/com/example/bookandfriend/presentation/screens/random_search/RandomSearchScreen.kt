@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -114,14 +115,8 @@ fun RandomSearchScreen(
             CenterAlignedTopAppBar(
                 title = { Text(text = "Random book", textAlign = TextAlign.Center) },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = customColors.background,
+                    containerColor = Color.Transparent,
                     titleContentColor = customColors.textColor
-                ),
-                modifier = Modifier.shadow(
-                    elevation = 8.dp,
-                    shape = RectangleShape,
-                    ambientColor = customColors.shadowColor,
-                    spotColor = customColors.shadowColor
                 )
             )
         },
@@ -308,6 +303,7 @@ fun RandomSearchScreen(
             }
             IconButton(
                 onClick = {
+                    vm.playSound()
                     vm.processCommand(
                         RandomSearchCommand.GetRandomBook(
                             century = if (selectedCentury.apiValue == 0) null else selectedCentury.apiValue,

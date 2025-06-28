@@ -26,11 +26,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.bookandfriend.BookAndFriendApplication
+import com.example.bookandfriend.R
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.navigation.BottomBar
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
@@ -56,14 +60,8 @@ fun MainScreen(
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = customColors.background,
+                    containerColor = Color.Transparent,
                     titleContentColor = customColors.textColor
-                ),
-                modifier = Modifier.shadow(
-                    elevation = 8.dp,
-                    shape = RectangleShape,
-                    ambientColor = customColors.shadowColor,
-                    spotColor = customColors.shadowColor
                 )
             )
         },
@@ -88,7 +86,10 @@ fun MainScreen(
 
             if (state.query.isNotBlank() && !state.searchExecuted) {
                 Button(
-                    onClick = { vm.processCommand(MainScreenCommand.SearchBooks(state.query)) },
+                    onClick = {
+                        vm.playSound()
+                        vm.processCommand(MainScreenCommand.SearchBooks(state.query))
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = customColors.switchActive,
                         contentColor = customColors.switchCircle

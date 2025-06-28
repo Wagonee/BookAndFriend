@@ -5,10 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.bookandfriend.data.database.entity.Settings
 import com.example.bookandfriend.domain.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,12 +19,11 @@ class SettingsVM @Inject constructor(
     private val repository: SettingsRepository
 ) : ViewModel() {
 
-    // Создаем поток настроек с дефолтным значением.
     val settings: StateFlow<Settings> = repository.getSettings()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
-            initialValue = Settings()
+            initialValue = runBlocking { repository.getSettings().first() ?: Settings() }
         )
 
     fun setDarkThemeEnabled(enabled: Boolean) {
