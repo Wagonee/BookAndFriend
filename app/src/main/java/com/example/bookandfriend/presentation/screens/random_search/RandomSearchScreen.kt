@@ -58,7 +58,7 @@ fun RandomSearchScreen(
             SelectableItem(stringResource(id = R.string.language_any), ""),
             SelectableItem(stringResource(id = R.string.language_english), "eng"),
             SelectableItem(stringResource(id = R.string.language_russian), "rus"),
-            SelectableItem(stringResource(id = R.string.language_french), "fra"),
+            SelectableItem(stringResource(id = R.string.language_french), "fre"),
             SelectableItem(stringResource(id = R.string.language_german), "ger"),
             SelectableItem(stringResource(id = R.string.language_spanish), "spa"),
             SelectableItem(stringResource(id = R.string.language_italian), "ita")

@@ -41,7 +41,7 @@ class BookMapper @Inject constructor(@ApplicationContext private val context: Co
             "eng" -> context.getString(R.string.language_english)
             "ger" -> context.getString(R.string.language_german)
             "rus" -> context.getString(R.string.language_russian)
-            "fra" -> context.getString(R.string.language_french)
+            "fre" -> context.getString(R.string.language_french)
             null -> context.getString(R.string.language_na)
             else -> code.replaceFirstChar { it.uppercaseChar() }
         }

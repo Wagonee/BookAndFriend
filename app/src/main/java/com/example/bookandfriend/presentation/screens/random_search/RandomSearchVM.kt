@@ -1,5 +1,6 @@
 package com.example.bookandfriend.presentation.screens.random_search
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookandfriend.domain.model.Book
@@ -83,13 +84,19 @@ class RandomSearchVM @Inject constructor(
     private fun addToLibrary(book: Book) {
         viewModelScope.launch {
             try {
-                addToLibraryUseCase(book.copy(isLiked = true))
-                _state.update {
-                    if (it.book?.id == book.id) {
-                        it.copy(book = it.book.copy(isLiked = true))
-                    } else {
-                        it
+                val enrichedBookResult = getBookDetailsUseCase(book)
+                if (enrichedBookResult.isSuccess) {
+                    val enrichedBook = enrichedBookResult.getOrThrow()
+                    addToLibraryUseCase(enrichedBook.copy(isLiked = true))
+                    _state.update {
+                        if (it.book?.id == book.id) {
+                            it.copy(book = enrichedBook.copy(isLiked = true))
+                        } else {
+                            it
+                        }
                     }
+                } else {
+                    _state.update { it.copy(error = "Error in get book details") }
                 }
             } catch (e: Exception) {
                 _state.update { it.copy(error = e.message) }
