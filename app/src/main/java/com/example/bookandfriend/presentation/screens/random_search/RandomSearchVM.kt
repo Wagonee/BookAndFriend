@@ -1,6 +1,5 @@
 package com.example.bookandfriend.presentation.screens.random_search
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookandfriend.domain.model.Book
@@ -10,21 +9,12 @@ import com.example.bookandfriend.domain.usecase.GetBookDetailsUseCase
 import com.example.bookandfriend.domain.usecase.RemoveFromLibraryUseCase
 import com.example.bookandfriend.domain.usecase.SearchRandomBookUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-private data class RandomSearchParams(val genre: String?, val century: Int?, val language: String?)
-
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class RandomSearchVM @Inject constructor(
     private val randomBookUseCase: SearchRandomBookUseCase,
@@ -36,16 +26,12 @@ class RandomSearchVM @Inject constructor(
 
     private val _state = MutableStateFlow(RandomSearchState())
     val state = _state.asStateFlow()
-    private val _searchTrigger = MutableStateFlow<RandomSearchParams?>(null)
+
     fun processCommand(command: RandomSearchCommand) {
         when (command) {
             is RandomSearchCommand.AddBookToLibrary -> addToLibrary(command.book)
             is RandomSearchCommand.GetBookDetails -> getBookDetails(command.book, command.onSuccess)
-            is RandomSearchCommand.GetRandomBook -> {
-                _searchTrigger.value =
-                    RandomSearchParams(command.genre, command.century, command.language)
-            }
-
+            is RandomSearchCommand.GetRandomBook -> getRandomBook(command.genre, command.century, command.language)
             is RandomSearchCommand.RemoveBookFromLibrary -> removeFromLibrary(command.bookId)
         }
     }
@@ -54,30 +40,21 @@ class RandomSearchVM @Inject constructor(
         soundPlayer.playClickSound()
     }
 
-    init {
+    private fun getRandomBook(genre: String?, century: Int?, language: String?) {
         viewModelScope.launch {
-            _searchTrigger
-                .filterNotNull()
-                .flatMapLatest { params ->
-                    flow {
-                        emit(randomBookUseCase(params.genre, params.century, params.language))
-                    }.onStart {
-                        _state.update { it.copy(isLoading = true, error = null, book = null) }
-                    }
+            _state.update { it.copy(isLoading = true, error = null, book = null) }
+            val result = randomBookUseCase(genre, century, language)
+            result.onSuccess { book ->
+                _state.update { it.copy(isLoading = false, book = book) }
+            }.onFailure { throwable ->
+                _state.update {
+                    it.copy(
+                        book = null,
+                        error = throwable.message,
+                        isLoading = false
+                    )
                 }
-                .collect { result ->
-                    result.onSuccess { book ->
-                        _state.update { it.copy(isLoading = false, book = book) }
-                    }.onFailure { throwable ->
-                        _state.update {
-                            it.copy(
-                                book = null,
-                                error = throwable.message,
-                                isLoading = false
-                            )
-                        }
-                    }
-                }
+            }
         }
     }
 
@@ -120,7 +97,6 @@ class RandomSearchVM @Inject constructor(
             }
         }
     }
-
 
     private fun getBookDetails(book: Book, onSuccess: (Book) -> Unit) {
         viewModelScope.launch {
