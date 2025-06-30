@@ -47,7 +47,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.retrofit)
     implementation(libs.coil)
-    implementation(libs.coil.compose)
+    implementation(
+
+        libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.gson)
     implementation(libs.logging.interceptor)

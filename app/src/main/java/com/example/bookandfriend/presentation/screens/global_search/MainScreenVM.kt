@@ -12,11 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,7 +34,7 @@ class MainScreenVM @Inject constructor(
                 is MainScreenCommand.AddToLibrary -> addToLibrary(command.book)
                 is MainScreenCommand.GetBookDetails -> getBookDetails(command.book, command.onSuccess)
                 is MainScreenCommand.RemoveFromLibrary -> removeFromLibrary(command.bookId)
-                is MainScreenCommand.SearchBooks -> _searchTrigger.value = command.query
+                is MainScreenCommand.SearchBooks -> searchBooks(command.query)
                 is MainScreenCommand.UpdateQuery -> updateSearchQuery(command.query)
             }
         }
@@ -49,45 +44,18 @@ class MainScreenVM @Inject constructor(
         soundPlayer.playClickSound()
     }
 
-    private val _searchTrigger = MutableStateFlow("")
-
-    init {
+    private fun searchBooks(query: String) {
         viewModelScope.launch {
-            _searchTrigger
-                .filter { it.isNotBlank() }
-                .distinctUntilChanged()
-                .flatMapLatest { query ->
-                    searchBooksUseCase(query)
-                        .onStart { _state.update { it.copy(isLoading = true, searchExecuted = true, error = null) } }
-                        .catch { throwable ->
-                            _state.update {
-                                it.copy(
-                                    isLoading = false,
-                                    error = throwable.message,
-                                )
-                            }
-                        }
+            _state.update { it.copy(isLoading = true, searchExecuted = true, error = null) }
+            searchBooksUseCase(query)
+                .onSuccess { books ->
+                    _state.update { it.copy(bookList = books, isLoading = false) }
                 }
-                .collect { result ->
-                    result.onSuccess { books ->
-                        _state.update {
-                            it.copy(
-                                bookList = books,
-                                isLoading = false
-                            )
-                        }
-                    }.onFailure { throwable ->
-                        _state.update {
-                            it.copy(
-                                isLoading = false,
-                                error = throwable.message
-                            )
-                        }
-                    }
+                .onFailure { throwable ->
+                    _state.update { it.copy(isLoading = false, error = throwable.message) }
                 }
         }
     }
-
 
     private fun updateSearchQuery(query: String) {
         _state.update { it.copy(query = query, searchExecuted = false, bookList = emptyList()) }
