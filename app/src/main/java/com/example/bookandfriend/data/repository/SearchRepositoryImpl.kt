@@ -6,9 +6,7 @@ import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.domain.model.BookDetails
 import com.example.bookandfriend.domain.repository.LibraryRepository
 import com.example.bookandfriend.domain.repository.SearchRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class SearchRepositoryImpl @Inject constructor(
@@ -16,23 +14,15 @@ class SearchRepositoryImpl @Inject constructor(
     private val libraryRepository: LibraryRepository,
     private val mapper: BookMapper
 ) : SearchRepository {
-    override suspend fun searchBooks(query: String): Flow<Result<List<Book>>> {
-        val likedBooksFlow: Flow<List<Book>> = libraryRepository.getAllBook()
-        val networkResultFlow: Flow<Result<List<Book>>> = flow {
-            try {
-                val response = apiService.searchBooks(query)
-                val books = response.docs.map { mapper.mapDtoToDomain(it) }
-                emit(Result.success(books))
-            } catch (e: Exception) {
-                emit(Result.failure(e))
-            }
-        }
-        return networkResultFlow.combine(likedBooksFlow) { networkResult, likedBooks ->
+    override suspend fun searchBooks(query: String): Result<List<Book>> {
+        return runCatching {
+            val likedBooks = libraryRepository.getAllBook().first()
             val likedBookIds = likedBooks.map { it.id }.toSet()
-            networkResult.map { networkBooks ->
-                networkBooks.map { networkBook ->
-                    networkBook.copy(isLiked = likedBookIds.contains(networkBook.id))
-                }
+            val response = apiService.searchBooks(query)
+            val networkBooks = response.docs.map { mapper.mapDtoToDomain(it) }
+
+            networkBooks.map { networkBook ->
+                networkBook.copy(isLiked = likedBookIds.contains(networkBook.id))
             }
         }
     }

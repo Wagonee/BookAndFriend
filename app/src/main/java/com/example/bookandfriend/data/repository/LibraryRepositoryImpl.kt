@@ -28,19 +28,19 @@ class LibraryRepositoryImpl @Inject constructor(private val libraryDao: LibraryD
 
     fun BookEntity.toDomain(): Book {
         return Book(
-            id,
-            title,
-            author,
-            coverId,
-            publishYear,
-            language,
-            description,
-            genres,
+            id = id,
+            title = title,
+            author = author,
+            coverId = coverId,
+            publishYear = publishYear,
+            language = language,
+            description = description,
+            genres = genres,
             isLiked = true
         )
     }
 
     fun Book.toEntity(): BookEntity {
-        return BookEntity(id, title, author, coverId, publishYear, language, description, genres)
+        return BookEntity(id = id, title = title, author = author, coverId = coverId, publishYear = publishYear, language = language, description = description, genres = genres)
     }
 }
