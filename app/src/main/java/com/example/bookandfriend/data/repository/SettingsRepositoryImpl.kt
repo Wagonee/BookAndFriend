@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class SettingsRepositoryImpl @Inject constructor(
     private val settingsDao: SettingsDao
 ) : SettingsRepository {

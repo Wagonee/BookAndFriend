@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets
 fun NavigationFunc() {
     val navController = rememberNavController()
 
-    val onBookClick: (Book) -> Unit = { book ->
+    fun navigateToBookInfo(book: Book) {
         val json = Gson().toJson(book)
         val encodedJson = URLEncoder.encode(json, StandardCharsets.UTF_8.toString())
         navController.navigate("BookInfo/$encodedJson")
@@ -36,21 +36,21 @@ fun NavigationFunc() {
             composable("MainScreen") {
                 MainScreen(
                     navController = navController,
-                    onBookClick = onBookClick
+                    onBookClick = ::navigateToBookInfo
                 )
             }
 
             composable("RandomSearch") {
                 RandomSearchScreen(
                     navController = navController,
-                    onBookClick = onBookClick
+                    onBookClick = ::navigateToBookInfo
                 )
             }
 
             composable("Library") {
                 LibraryScreen(
                     navController = navController,
-                    onBookClick = onBookClick
+                    onBookClick = ::navigateToBookInfo
                 )
             }
 
@@ -65,10 +65,19 @@ fun NavigationFunc() {
                 })
             ) { backStackEntry ->
                 val bookJson = backStackEntry.arguments?.getString("bookJson") ?: return@composable
-                val decodedJson = URLDecoder.decode(bookJson ?: "", StandardCharsets.UTF_8.toString())
-                val book = Gson().fromJson(decodedJson, Book::class.java)
+                val book: Book? = try {
+                    val decodedJson = URLDecoder.decode(bookJson.orEmpty(), StandardCharsets.UTF_8.toString())
+                    Gson().fromJson(decodedJson, Book::class.java)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
 
-                BookInfoScreen(navController, book)
+                if (book != null) {
+                    BookInfoScreen(navController, book)
+                } else {
+                    navController.popBackStack()
+                }
             }
         }
     }
