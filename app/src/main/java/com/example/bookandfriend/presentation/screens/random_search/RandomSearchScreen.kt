@@ -304,6 +304,9 @@ fun RandomSearchScreen(
                     CircularProgressIndicator()
                 }
             }
+            if (state.error != null) {
+               Text(text = state.error!!, color = Color.Red, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center)
+            }
             if (state.book != null) {
                 BookItem(
                     book = state.book!!, onLikeClick = {
