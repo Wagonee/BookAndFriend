@@ -1,4 +1,4 @@
-package com.example.bookandfriend.presentation.screens.library
+package com.example.bookandfriend.presentation.screens.library.library_vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -62,13 +62,5 @@ class LibraryVM @Inject constructor(
 }
 
 
-sealed interface LibraryCommand {
-    data class InputSearchQuery(val query: String) : LibraryCommand
-    data class RemoveBook(val book: Book) : LibraryCommand
-    data class ShowDetails(val book: Book, val onShowed: (Book) -> Unit) : LibraryCommand
-}
 
-data class LibraryState(
-    val query: String = "",
-    val books: List<Book> = listOf()
-)
+

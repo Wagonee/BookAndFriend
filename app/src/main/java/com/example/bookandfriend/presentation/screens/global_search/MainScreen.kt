@@ -33,6 +33,8 @@ import androidx.navigation.NavController
 import com.example.bookandfriend.R
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.navigation.BottomBar
+import com.example.bookandfriend.presentation.screens.global_search.global_search_vm.MainScreenCommand
+import com.example.bookandfriend.presentation.screens.global_search.global_search_vm.MainScreenVM
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
 @OptIn(ExperimentalMaterial3Api::class)

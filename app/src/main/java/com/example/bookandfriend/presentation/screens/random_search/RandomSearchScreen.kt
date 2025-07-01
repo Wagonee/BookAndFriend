@@ -23,6 +23,8 @@ import com.example.bookandfriend.R
 import com.example.bookandfriend.domain.model.Book
 import com.example.bookandfriend.presentation.components.BookItem
 import com.example.bookandfriend.presentation.navigation.BottomBar
+import com.example.bookandfriend.presentation.screens.random_search.random_search_vm.RandomSearchCommand
+import com.example.bookandfriend.presentation.screens.random_search.random_search_vm.RandomSearchVM
 import com.example.bookandfriend.presentation.ui.theme.LocalCustomColors
 
 private data class SelectableItem(val displayName: String, val apiValue: String)
@@ -317,7 +319,8 @@ fun RandomSearchScreen(
                         }
                     },
                     onItemClick = {
-                        vm.processCommand(RandomSearchCommand.GetBookDetails(
+                        vm.processCommand(
+                            RandomSearchCommand.GetBookDetails(
                             state.book!!,
                             onSuccess = onBookClick
                         ))

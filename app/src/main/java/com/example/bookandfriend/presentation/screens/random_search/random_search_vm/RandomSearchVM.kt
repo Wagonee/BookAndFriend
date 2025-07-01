@@ -1,4 +1,4 @@
-package com.example.bookandfriend.presentation.screens.random_search
+package com.example.bookandfriend.presentation.screens.random_search.random_search_vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -110,20 +110,5 @@ class RandomSearchVM @Inject constructor(
 }
 
 
-sealed interface RandomSearchCommand {
-    data class GetRandomBook(val century: Int?, val genre: String?, val language: String?) :
-        RandomSearchCommand
 
-    data class AddBookToLibrary(val book: Book) : RandomSearchCommand
-    data class RemoveBookFromLibrary(val bookId: String) : RandomSearchCommand
-    data class GetBookDetails(val book: Book, val onSuccess: (Book) -> Unit) : RandomSearchCommand
-}
 
-data class RandomSearchState(
-    val book: Book? = null,
-    val century: Int? = null,
-    val genre: String? = null,
-    val language: String? = null,
-    val isLoading: Boolean = false,
-    val error: String? = null
-)

@@ -1,4 +1,4 @@
-package com.example.bookandfriend.presentation.screens.global_search
+package com.example.bookandfriend.presentation.screens.global_search.global_search_vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -114,10 +114,3 @@ sealed interface MainScreenCommand {
     data class GetBookDetails(val book: Book, val onSuccess: (Book) -> Unit) : MainScreenCommand
 }
 
-data class MainScreenState(
-    var query: String = "",
-    val bookList: List<Book> = listOf(),
-    val isLoading: Boolean = false,
-    val searchExecuted: Boolean = false,
-    val error: String? = null
-)
